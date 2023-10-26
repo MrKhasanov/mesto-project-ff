@@ -31,8 +31,8 @@ function addCard(item) {
 
 // @todo: Функция удаления карточки
     
-function deleteCard(del) {
-    const cardDelete = del.target.closest('.places__item');
+function deleteCard(event) {
+    const cardDelete = event.target.closest('.places__item');
     cardDelete.remove();
 }
   
@@ -40,7 +40,7 @@ function deleteCard(del) {
 // @todo: Вывести карточки на страницу
 
 initialCards.forEach(function (item) {
-    const openCard = createCard(item, deleteCard);
-    addCard(openCard);
+    const newCard = createCard(item, deleteCard);
+    addCard(newCard);
 });
 
