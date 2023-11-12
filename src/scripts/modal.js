@@ -1,4 +1,4 @@
-import { cardLike, createCard, deleteCard } from './cards';
+import { cardLike, createCard, deleteCard } from './createCard';
 
 const profileEditButton = document.querySelector('.profile__edit-button');
 const profileAddButton = document.querySelector('.profile__add-button');

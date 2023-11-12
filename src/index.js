@@ -1,6 +1,5 @@
 
 
-
 profileEditButton.addEventListener('click', openPopupProfile);
 profileAddButton.addEventListener('click', openPopupNewPlace);
 
@@ -15,5 +14,5 @@ initialCards.forEach(function (item) {
 
 import './pages/index.css';
 import { initialCards } from './scripts/cards';
-import { createCard, addCard, deleteCard, cardLike} from './scripts/cards';
+import { createCard,addCard,  deleteCard, cardLike} from './scripts/createCard.js';
 import { openPopupCardImage, openPopupProfile, openPopupNewPlace, profileAddButton, profileEditButton} from './scripts/modal';
