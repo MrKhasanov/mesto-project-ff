@@ -1,7 +1,7 @@
 const cardTemplate = document.querySelector('#card-template').content;
 const placesList = document.querySelector('.places__list');
 
-function createCard(item, deleteCard, cardLike, popupCardImage) {
+export function createCard(item, deleteCard, cardLike, openPopupCardImage) {
   const cardElement = cardTemplate
     .querySelector('.places__item')
     .cloneNode(true);
@@ -15,10 +15,10 @@ function createCard(item, deleteCard, cardLike, popupCardImage) {
 
   deleteButton.addEventListener('click', deleteCard);
 
-  cardImage.addEventListener('click', popupCardImage);
+  cardImage.addEventListener('click', openPopupCardImage);
 
   likeButton.addEventListener('click', cardLike);
-
+  
   return cardElement;
 }
 
@@ -26,6 +26,7 @@ function addCard(item) {
   placesList.append(item);
 }
 
+// Функция для лайка карточки
 export const cardLike = function (evt) {
   evt.target.classList.toggle('card__like-button_is-active');
 };
@@ -36,6 +37,8 @@ function deleteCard(event) {
   const cardDelete = event.target.closest('.places__item');
   cardDelete.remove();
 }
+
+
 
 const initialCards = [
   {
@@ -66,6 +69,6 @@ const initialCards = [
 
 export { initialCards };
 
-export { createCard, deleteCard, addCard, cardTemplate, placesList };
+export { deleteCard, addCard, cardTemplate, placesList };
 
-import { popupAnimated } from './modal';
+

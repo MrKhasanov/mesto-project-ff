@@ -1,10 +1,4 @@
-import {
-  cardLike,
-  createCard,
-  deleteCard,
-  placesList,
-} from './cards';
-const closePopup = document.querySelector('.popup__close');
+import { cardLike, createCard, deleteCard } from './cards';
 
 const profileEditButton = document.querySelector('.profile__edit-button');
 const profileAddButton = document.querySelector('.profile__add-button');
@@ -17,44 +11,44 @@ const popupTypeEdit = document.querySelector('.popup_type_edit');
 const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
 const popupInputName = document.querySelector('.popup__input_type_name');
-const popupInputDescription = document.querySelector('.popup__input_type_description');
-
+const popupInputDescription = document.querySelector(
+  '.popup__input_type_description'
+);
+const buttonClosePopupEdit = document.querySelectorAll('.popup__close');
 
 //плавное открытие попапов
-const popupAnimatedOpen = (evt) => {
-    evt.classList.add('popup_is-animated');
-    setTimeout(()=> {
-        evt.classList.add('popup_is-opened');
-    }, 100);
+export const openModal = (evt) => {
+  evt.classList.add('popup_is-animated');
+  setTimeout(() => {
+    evt.classList.add('popup_is-opened');
+  }, 100);
+
+  document.addEventListener('keydown', closePopupByEsc);
 };
 
 //popap Image
-export const popupCardImage = (evt) => {
-  evt.preventDefault();
-  popupAnimatedOpen(popupTypeImage);
-  
-  popupImage.src = evt.link;
-  popupImage.alt = evt.name;
-  popupCaption.textContent = evt.name;
 
+export const openPopupCardImage = (evt) => {
+  openModal(popupTypeImage);
+
+  popupImage.src = evt.target.src;
+  popupImage.alt = evt.target.alt;
+  popupCaption.textContent = evt.target.alt;
 };
-
-const closeImage = popupTypeImage.querySelector('.popup__close');
-closeImage.addEventListener('click', function () {
-  popupTypeImage.classList.remove('popup_is-opened');
-});
 
 //form profile
 
-function popapOpenProfile(evt) {
-  evt.preventDefault();
-  popupAnimatedOpen(popupTypeEdit);
+function openPopupProfile() {
+  openModal(popupTypeEdit);
   popupInputName.setAttribute('value', profileTitle.textContent);
   popupInputDescription.setAttribute('value', profileDescription.textContent);
 }
 
-const formElement = document.querySelector('form[name="edit-profile"]');
-function handleFormSubmit(evt) {
+const formElementEditProfile = document.querySelector(
+  'form[name="edit-profile"]'
+);
+
+function handleEditFormSubmit(evt) {
   evt.preventDefault();
   const popupName = popupInputName.value;
   const popupJob = popupInputDescription.value;
@@ -68,62 +62,61 @@ function handleFormSubmit(evt) {
   popupInputName.value = '';
   popupInputDescription.value = '';
 
-  closePopap(popupTypeEdit);
+  closeModal(popupTypeEdit);
 }
 
-formElement.addEventListener('submit', handleFormSubmit);
+formElementEditProfile.addEventListener('submit', handleEditFormSubmit);
 
 //form New Image
-function popupOpenNewPlace(evt) {
-    evt.preventDefault();
-    popupAnimatedOpen(popupNewCard);
-  }
+function openPopupNewPlace(evt) {
+  evt.preventDefault();
+  openModal(popupNewCard);
+}
 
 const formElementImage = document.querySelector('form[name="new-place"]');
 
-const nameInput = formElementImage.querySelector('.popup__input_type_card-name');
-const jobInput = formElementImage.querySelector('.popup__input_type_url');
-function handleFormSubmitImage(evt) {
+const cardNameInput = formElementImage.querySelector(
+  '.popup__input_type_card-name'
+);
+const cardUrlInput = formElementImage.querySelector('.popup__input_type_url');
+const placesList = document.querySelector('.places__list');
+
+export function handleFormSubmitImage(evt) {
   evt.preventDefault();
-  const popupImageName = nameInput.value;
-  const popupImageJob = jobInput.value;
+  const newCardName = cardNameInput.value;
+  const newCardUrl = cardUrlInput.value;
 
   const cardCard = {
-    name: popupImageName,
-    link: popupImageJob,
-    alt: popupImageName,
+    name: newCardName,
+    link: newCardUrl,
   };
 
-  nameInput.value = '';
-  jobInput.value = '';
+  cardNameInput.value = '';
+  cardUrlInput.value = '';
 
-  const newCard = createCard(cardCard, deleteCard, cardLike, popupCardImage);
+  const newCard = createCard(
+    cardCard,
+    deleteCard,
+    cardLike,
+    openPopupCardImage
+  );
   placesList.prepend(newCard);
 
-  closePopap(popupNewCard);
+  closeModal(popupNewCard);
 }
 formElementImage.addEventListener('submit', handleFormSubmitImage);
 
-const close = popupNewCard.querySelector('.popup__close');
-close.addEventListener('click', function () {
-  popupNewCard.classList.remove('popup_is-opened');
-});
-
 //функция закрытия попапа
-const closePopap = (evt) => {
-  evt.classList.remove('popup_is-opened');
-};
+export const closeModal = (popup) => {
+  popup.classList.remove('popup_is-opened');
 
-const popupClose = function () {
-  closePopap(popupTypeEdit);
+  document.removeEventListener('keydown', closePopupByEsc);
 };
 
 //закрытие по клавише Esc
-const popupCloseEsc = function (evt) {
+const closePopupByEsc = function (evt) {
   if (evt.code === 'Escape') {
-    popupTypeImage.classList.remove('popup_is-opened');
-    popupTypeEdit.classList.remove('popup_is-opened');
-    popupNewCard.classList.remove('popup_is-opened');
+    closeModal(document.querySelector('.popup_is-opened'));
   }
 };
 
@@ -131,22 +124,26 @@ const popupCloseEsc = function (evt) {
 popup.forEach((item) => {
   item.addEventListener('click', (evt) => {
     if (evt.target === evt.currentTarget) {
-      closePopap(item);
+      closeModal(item);
     }
   });
 });
 
-profileEditButton.addEventListener('click', popapOpenProfile);
-profileAddButton.addEventListener('click', popupOpenNewPlace);
-closePopup.addEventListener('click', popupClose);
-document.addEventListener('keydown', popupCloseEsc);
+//закрытие модального окна по клику на крестик
+buttonClosePopupEdit.forEach((item) => {
+  item.addEventListener('click', (evt) => {
+    closeModal(evt.target.closest('.popup'));
+  });
+});
 
 export {
   popupTypeEdit,
   profileEditButton,
+  profileAddButton,
   profileTitle,
   profileDescription,
   popupInputName,
   popupInputDescription,
-  popapOpenProfile,
+  openPopupProfile,
+  openPopupNewPlace,
 };

@@ -1,24 +1,19 @@
 
-// @todo: Темплейт карточки
 
 
-// @todo: DOM узлы
+profileEditButton.addEventListener('click', openPopupProfile);
+profileAddButton.addEventListener('click', openPopupNewPlace);
 
-
-
-// @todo: Функция создания карточки
-
-
-
-// @todo: Вывести карточки на страницу
 
 initialCards.forEach(function (item) {
-    const newCard = createCard(item, deleteCard,cardLike, popupCardImage);
+    const newCard = createCard(item, deleteCard,cardLike, openPopupCardImage);
     addCard(newCard);
   });
-  
-  
+
+
+
+
 import './pages/index.css';
 import { initialCards } from './scripts/cards';
 import { createCard, addCard, deleteCard, cardLike} from './scripts/cards';
-import { popupCardImage} from './scripts/modal';
+import { openPopupCardImage, openPopupProfile, openPopupNewPlace, profileAddButton, profileEditButton} from './scripts/modal';
