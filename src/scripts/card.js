@@ -32,12 +32,9 @@ export const cardLike = function (evt) {
 };
 
 // @todo: Функция удаления карточки
-
 function deleteCard(event) {
   const cardDelete = event.target.closest('.places__item');
   cardDelete.remove();
 }
-
-
 
 export { deleteCard, addCard, cardTemplate, placesList };
